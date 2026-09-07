@@ -1,0 +1,8 @@
+{
+  "name":"Jest Life Tracker",
+  "short_name":"Jest",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#f7fbfc",
+  "theme_color":"#f7fbfc"
+}
