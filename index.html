@@ -8,15 +8,18 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>Jest — Life Tracker</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="styles.css?v=1.4.0" />
-  <link rel="stylesheet" href="mood-fixes.css?v=1.4.0" />
+  <link rel="stylesheet" href="styles.css?v=1.5.0" />
+  <link rel="stylesheet" href="mood-fixes.css?v=1.5.0" />
 </head>
 <body>
   <div id="app" class="app-shell">
     <header class="topbar">
-      <div>
-        <div class="brand">Jest ♡ <small style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:8px;font-weight:400;letter-spacing:.4px;color:#9aa8b6;vertical-align:middle;opacity:.7">v1.4.0</small></div>
-        <div class="tagline">TRACK · BALANCE · A HAPPIER YOU</div>
+      <div class="brand-image-wrap" aria-label="Jest — Track · Balance · A Happier You">
+        <div class="brand-image" aria-hidden="true">
+          <span class="brand-word">Jest</span><span class="brand-heart">♡</span>
+          <span class="brand-tagline">TRACK · BALANCE · A HAPPIER YOU</span>
+        </div>
+        <small class="app-version">v1.5.0</small>
       </div>
       <button class="icon-btn" id="settingsBtn" aria-label="Settings">⚙︎</button>
     </header>
@@ -33,7 +36,7 @@
   </div>
 
   <div id="modalRoot"></div>
-  <script src="core.js?v=1.4.0"></script>
+  <script src="core.js?v=1.5.0"></script>
   <script src="spending.js"></script>
   <script src="sleep.js"></script>
   <script src="period-water.js"></script>
