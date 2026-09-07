@@ -23,7 +23,7 @@ const moodList=[
 const symptoms=[
  ['Cramps','cramps'],['Bloating','bloating'],['Headache','headache'],['Mood changes','mood-changes'],['Back pain','back-pain'],['Breast tenderness','breast-tenderness'],['Food cravings','food-cravings'],['Sleep issues','sleep-issues'],['Easily annoyed','easily-annoyed']
 ];
-const moodImg=k=>`assets/mood-${k}.webp?v=1.4.0`;
+const moodImg=k=>`assets/mood-${k}.webp?v=1.7.1`;
 const symptomImg=k=>`assets/symptom-${k}.webp`;
 const daysIn=(y,m)=>new Date(y,m+1,0).getDate();
 const mk=()=>`${state.year}-${pad(state.month+1)}`;
