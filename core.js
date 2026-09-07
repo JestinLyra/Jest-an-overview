@@ -31,7 +31,7 @@ const mk=()=>`${state.year}-${pad(state.month+1)}`;
 function setRoute(route){state.route=route; $$('.nav-btn[data-route]').forEach(b=>b.classList.toggle('active',b.dataset.route===route)); render();}
 
 function card(title,value,sub='',cls=''){return `<div class="card stat-card ${cls}"><h3>${title}</h3><div class="stat-main">${value}</div>${sub?`<div class="subtle">${sub}</div>`:''}</div>`}
-function navMonth(delta){state.month+=delta;if(state.month<0){state.month=11;state.year--}if(state.month>11){state.month=0;state.year++}render();}
+function navMonth(delta){state.month+=delta;if(state.month<0){state.month=11;state.year--}if(state.month>11){state.month=0;state.year++}if(state.route==='home'&&state.track==='sleep'&&document.querySelector('.page-title')?.textContent==='Sleep + Mood')return renderSleepMood();if(state.route==='home'&&state.track==='period'&&document.querySelector('.page-title')?.textContent==='Period + Symptoms')return renderPeriod();if(state.route==='home'&&state.track==='water'&&document.querySelector('.page-title')?.textContent==='Water + Sugar')return renderWaterSugar();render();}
 function monthNav(){return `<div class="month-nav"><button onclick="navMonth(-1)">‹</button><strong>${monthName(state.year,state.month)}</strong><button onclick="navMonth(1)">›</button></div>`}
 
 function render(){
