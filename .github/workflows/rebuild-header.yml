@@ -1,4 +1,4 @@
-name: Diagnose approved header chunks
+name: Publish approved header artwork
 
 on:
   push:
@@ -9,24 +9,73 @@ permissions:
   contents: write
 
 jobs:
-  diagnose:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Verify staged header chunks
+        with:
+          fetch-depth: 0
+
+      - name: Rebuild and validate approved header
         shell: bash
         run: |
           set -euo pipefail
-          echo 'Expected lengths: 6000 6000 6000 6000 6000 6000 6000 3756'
-          for f in assets/header-chunk-*.txt; do wc -c "$f"; sha256sum "$f"; done
-          echo 'Expected SHA256:'
-          echo 'bdcf50db99c0e038b080ba813f585c57ec11a1d7f163db61d8ee7a74958dbb50  assets/header-chunk-01.txt'
-          echo '5a03ce87c3c965561e78ebe22ba33bbe8dc0ad341567f83765577c90d52c2b85  assets/header-chunk-02.txt'
-          echo 'ce60dc622ad422838a7ba60e6ee332e23b36325de8d07058552273f446552a55  assets/header-chunk-03.txt'
-          echo 'f96cfc82d6ccccff7cc84a5690a5cdff9642b5fcfe0dcd66aab6e26209f703fa  assets/header-chunk-04.txt'
-          echo '7e5bfaf82d420977d7630273af7f3aab1823b27b47ef0b11c0c7a7bf98b4d721  assets/header-chunk-05.txt'
-          echo '2371fb340b6078d270fa5f9f3959aa9ee01aa182814af70c0e8b8cc42db7d26b  assets/header-chunk-06.txt'
-          echo '5dedecf071ef11a51950ada574341dac9d78733c273fcda1eefa46806f44bc51  assets/header-chunk-07.txt'
-          echo 'fc3d88b8b4bfe81d7c31565e4d1af796921c665ef3b3147f3b6127ebc88c19cf  assets/header-chunk-08.txt'
+          echo 'bdcf50db99c0e038b080ba813f585c57ec11a1d7f163db61d8ee7a74958dbb50  assets/header-chunk-01.txt' | sha256sum -c -
+          echo '5a03ce87c3c965561e78ebe22ba33bbe8dc0ad341567f83765577c90d52c2b85  assets/header-chunk-02.txt' | sha256sum -c -
+          echo 'ce60dc622ad422838a7ba60e6ee332e23b36325de8d07058552273f446552a55  assets/header-chunk-03.txt' | sha256sum -c -
+          echo 'f96cfc82d6ccccff7cc84a5690a5cdff9642b5fcfe0dcd66aab6e26209f703fa  assets/header-chunk-04.txt' | sha256sum -c -
+          echo '7e5bfaf82d420977d7630273af7f3aab1823b27b47ef0b11c0c7a7bf98b4d721  assets/header-chunk-05.txt' | sha256sum -c -
+          echo '2371fb340b6078d270fa5f9f3959aa9ee01aa182814af70c0e8b8cc42db7d26b  assets/header-chunk-06.txt' | sha256sum -c -
+          echo '5dedecf071ef11a51950ada574341dac9d78733c273fcda1eefa46806f44bc51  assets/header-chunk-07.txt' | sha256sum -c -
+          echo 'fc3d88b8b4bfe81d7c31565e4d1af796921c665ef3b3147f3b6127ebc88c19cf  assets/header-chunk-08.txt' | sha256sum -c -
 
-# trigger diagnostics
+          cat assets/header-chunk-*.txt | tr -d '\n\r' | base64 --decode > assets/jest-header-approved.webp
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('assets/jest-header-approved.webp')
+          b=p.read_bytes()
+          if len(b) != 34316:
+              raise SystemExit(f'Unexpected header size: {len(b)}')
+          if not (b[:4] == b'RIFF' and b[8:12] == b'WEBP'):
+              raise SystemExit('Approved header is not a valid WebP container')
+          print('Validated approved header:', len(b), 'bytes')
+          PY
+
+          rm -f assets/jest-header-approved-v1.7.webp
+          rm -f assets/header-chunk-*.txt
+
+          python3 - <<'PY'
+          from pathlib import Path
+          index=Path('index.html').read_text()
+          index=index.replace('1.8.0','1.8.1')
+          index=index.replace('assets/jest-header-approved-v1.7.webp?v=1.8.1','assets/jest-header-approved.webp?v=1.8.1')
+          if 'assets/jest-header-approved.webp?v=1.8.1' not in index:
+              raise SystemExit('Header path update failed')
+          if 'v1.8.1' not in index:
+              raise SystemExit('Version bump failed')
+          Path('index.html').write_text(index)
+
+          css='''.approved-topbar{position:sticky;top:0;z-index:20;display:block;padding:calc(8px + env(safe-area-inset-top)) 10px 8px;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid #eef3f6}.approved-brand-wrap{position:relative;width:100%;min-width:0}.approved-brand-image{display:block;width:100%;height:auto;aspect-ratio:1290/484;object-fit:cover;object-position:center;border-radius:20px}.approved-brand-wrap .app-version{position:absolute;right:52px;bottom:9px;z-index:5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:8px;font-weight:500;letter-spacing:.35px;color:#5f5a86;opacity:.78;background:rgba(255,255,255,.72);padding:3px 6px;border-radius:7px;line-height:1;box-shadow:0 1px 6px rgba(62,54,110,.08)}.approved-topbar .header-settings-btn{position:absolute;right:18px;top:calc(50% + (env(safe-area-inset-top)/2));transform:translateY(-50%);z-index:6;width:36px;height:36px;display:flex;align-items:center;justify-content:center;margin:0;border-radius:50%;background:rgba(255,255,255,.78);box-shadow:0 2px 12px rgba(62,54,110,.14);font-size:20px}.approved-topbar .header-settings-btn:active{background:rgba(255,255,255,.94)}@media(max-width:390px){.approved-topbar{padding-left:8px;padding-right:8px}.approved-brand-image{border-radius:18px}.approved-brand-wrap .app-version{right:48px;bottom:8px;font-size:7px}.approved-topbar .header-settings-btn{right:14px;width:34px;height:34px;font-size:19px}}\n'''
+          Path('header-approved.css').write_text(css)
+
+          if Path('assets/jest-header-approved-v1.7.webp').exists():
+              raise SystemExit('Legacy header asset still exists')
+          if list(Path('assets').glob('header-chunk-*.txt')):
+              raise SystemExit('Header staging chunks still exist')
+          if 'jest-header-approved-v1.7.webp' in Path('index.html').read_text():
+              raise SystemExit('Legacy header reference remains')
+          PY
+
+          rm -f .github/workflows/rebuild-header.yml
+
+      - name: Publish header v1.8.1
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "Jest App Builder"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -m "Replace header with approved artwork v1.8.1"
+          git push origin HEAD:main
+
+# trigger publish v1.8.1
