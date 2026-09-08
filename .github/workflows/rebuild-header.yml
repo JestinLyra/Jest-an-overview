@@ -70,3 +70,5 @@ jobs:
           git add -A
           git commit -m "Replace header with approved artwork v1.8.1"
           git push origin HEAD:main
+
+# trigger: approved-header-v1.8.1
