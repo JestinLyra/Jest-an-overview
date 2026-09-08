@@ -23,7 +23,7 @@ const moodList=[
 const symptoms=[
  ['Cramps','cramps'],['Bloating','bloating'],['Headache','headache'],['Mood changes','mood-changes'],['Back pain','back-pain'],['Breast tenderness','breast-tenderness'],['Food cravings','food-cravings'],['Sleep issues','sleep-issues'],['Easily annoyed','easily-annoyed']
 ];
-const moodImg=k=>`assets/mood-${k}.webp?v=1.7.4`;
+const moodArt=(k,cls='')=>`<span class="mood-art mood-${k} ${cls}" aria-hidden="true"></span>`;
 const symptomImg=k=>`assets/symptom-${k}.webp`;
 const daysIn=(y,m)=>new Date(y,m+1,0).getDate();
 const mk=()=>`${state.year}-${pad(state.month+1)}`;
@@ -49,7 +49,7 @@ function renderHome(){
  <section class="section grid2">
   ${card('Spending',fmtMoney(spent),`of ${fmtMoney(totalBudget)} budget`)}
   ${card('Sleep',sm.sleep||'—',sm.sleep?'last recorded today':'tap to record')}
-  <div class="card stat-card" onclick="openSleepMood('${t}')"><h3>Mood</h3>${sm.mood?`<img class="legend-face" src="${moodImg(sm.mood)}"><div class="stat-main" style="font-size:18px">${moodList.find(x=>x[1]===sm.mood)?.[0]||''}</div>`:'<div class="stat-main">—</div><div class="subtle">tap to record</div>'}</div>
+  <div class="card stat-card" onclick="openSleepMood('${t}')"><h3>Mood</h3>${sm.mood?`${moodArt(sm.mood,'legend-face')}<div class="stat-main" style="font-size:18px">${moodList.find(x=>x[1]===sm.mood)?.[0]||''}</div>`:'<div class="stat-main">—</div><div class="subtle">tap to record</div>'}</div>
   ${card('Water',ws.water?`${ws.water} L`:'—','today')}
   ${card('Sugar',ws.sugar!=null?`${ws.sugar} serving${ws.sugar===1?'':'s'}`:'—','today')}
   ${card('Period',per.bleeding?per.bleeding:'No entry',per.bleeding?'bleeding logged':'tap to record')}
