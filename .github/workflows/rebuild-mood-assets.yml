@@ -1,0 +1,130 @@
+name: Rebuild approved mood artwork
+
+on:
+  push:
+    paths:
+      - '.github/workflows/rebuild-mood-assets.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Rebuild approved mood assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f assets/mood-sprite.b64.txt
+          base64 --decode assets/mood-sprite.b64.txt > assets/mood-sprite.webp
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('assets/mood-sprite.webp')
+          b=p.read_bytes()
+          if not (b[:4]==b'RIFF' and b[8:12]==b'WEBP'):
+              raise SystemExit('Decoded mood sprite is not a valid WebP')
+
+          # Remove every old individual mood binary and temporary repair artefact.
+          for f in Path('assets').glob('mood-*.webp'):
+              if f.name != 'mood-sprite.webp':
+                  f.unlink()
+          for name in ['assets/__content_repair_temp.txt','assets/mood-sprite.b64.txt']:
+              q=Path(name)
+              if q.exists(): q.unlink()
+
+          # Replace image-path rendering with a single approved sprite implementation.
+          core=Path('core.js').read_text()
+          old="const moodImg=k=>`assets/mood-${k}.webp?v=1.7.4`;"
+          new="const moodArt=(k,cls='')=>`<span class=\"mood-art mood-${k} ${cls}\" aria-hidden=\"true\"></span>`;"
+          if old not in core:
+              raise SystemExit('Expected moodImg implementation not found in core.js')
+          core=core.replace(old,new)
+          core=core.replace('<img class="legend-face" src="${moodImg(sm.mood)}">', "${moodArt(sm.mood,'legend-face')}")
+          Path('core.js').write_text(core)
+
+          sleep=Path('sleep.js').read_text()
+          sleep=sleep.replace('<img class="mood-thumb" src="${moodImg(v.mood)}">', "${moodArt(v.mood,'mood-thumb')}")
+          sleep=sleep.replace('<img class="legend-face" src="${moodImg(m[1])}">', "${moodArt(m[1],'legend-face')}")
+          sleep=sleep.replace('<img src="${moodImg(v.mood)}">', "${moodArt(v.mood,'annual-mood-art')}")
+          if 'moodImg(' in sleep:
+              raise SystemExit('Old moodImg reference remains in sleep.js')
+          Path('sleep.js').write_text(sleep)
+
+          modals=Path('modals.js').read_text()
+          modals=modals.replace('<img src="${moodImg(m[1])}">', "${moodArt(m[1],'choice-mood-art')}")
+          if 'moodImg(' in modals:
+              raise SystemExit('Old moodImg reference remains in modals.js')
+          Path('modals.js').write_text(modals)
+
+          css='''/* Approved Mood artwork set — v1.8.0. One sprite, no legacy mood image files. */
+          .mood-art{
+            --mood-x:0%; --mood-y:0%;
+            display:inline-block;
+            flex:0 0 auto;
+            aspect-ratio:1 / 1;
+            background-image:url("assets/mood-sprite.webp?v=1.8.0");
+            background-repeat:no-repeat;
+            background-size:500% 200%;
+            background-position:var(--mood-x) var(--mood-y);
+            background-origin:border-box;
+            background-clip:border-box;
+          }
+          .mood-cheerful{--mood-x:0%;--mood-y:0%}
+          .mood-content{--mood-x:25%;--mood-y:0%}
+          .mood-emotional{--mood-x:50%;--mood-y:0%}
+          .mood-energetic{--mood-x:75%;--mood-y:0%}
+          .mood-meh{--mood-x:100%;--mood-y:0%}
+          .mood-fatigued{--mood-x:0%;--mood-y:100%}
+          .mood-unmotivated{--mood-x:25%;--mood-y:100%}
+          .mood-stressed{--mood-x:50%;--mood-y:100%}
+          .mood-bored{--mood-x:75%;--mood-y:100%}
+          .mood-easily-annoyed{--mood-x:100%;--mood-y:100%}
+
+          .sq .mood-art.mood-thumb{
+            width:100%; height:100%; display:block; border-radius:inherit;
+          }
+          .legend-face.mood-art{
+            width:34px; height:34px; border-radius:8px; display:inline-block;
+          }
+          .stat-card .legend-face.mood-art{
+            width:48px; height:48px; border-radius:10px;
+          }
+          #moodChoices .choice .mood-art.choice-mood-art{
+            width:64px; height:64px; display:block; margin:0 auto 6px; border-radius:12px;
+          }
+          .annual-grid .cell .mood-art.annual-mood-art{
+            width:100%; height:100%; display:block; border-radius:inherit;
+          }
+          '''
+          Path('mood-fixes.css').write_text(css)
+
+          index=Path('index.html').read_text().replace('1.7.4','1.8.0')
+          Path('index.html').write_text(index)
+
+          # Production sanity checks.
+          expected={'cheerful','content','emotional','energetic','meh','fatigued','unmotivated','stressed','bored','easily-annoyed'}
+          if any(Path('assets').glob('mood-*.webp')):
+              present={p.name for p in Path('assets').glob('mood-*.webp')}
+              if present != {'mood-sprite.webp'}:
+                  raise SystemExit(f'Unexpected mood files remain: {present}')
+          for f in ['core.js','sleep.js','modals.js']:
+              if 'moodImg(' in Path(f).read_text():
+                  raise SystemExit(f'Legacy moodImg remains in {f}')
+          if 'v1.8.0' not in Path('index.html').read_text():
+              raise SystemExit('Version bump failed')
+          PY
+
+      - name: Publish cleaned mood build
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "Jest App Builder"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -m "Replace legacy mood assets with approved set v1.8.0"
+          git push origin HEAD:main
