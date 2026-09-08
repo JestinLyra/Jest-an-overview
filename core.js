@@ -45,8 +45,7 @@ function currentWeekTotal(){const now=new Date(); const day=(now.getDay()+6)%7; 
 function renderHome(){
  const ps=currentMonthPurchases(), spent=ps.reduce((s,p)=>s+Number(p.amount),0), totalBudget=db.budgets.inStore+db.budgets.online;
  const t=iso(today), sm=db.sleepMood[t]||{}, per=db.period[t]||{}, ws=db.waterSugar[t]||{};
- main.innerHTML=`<section class="card hero"><div><div class="script">Hello!</div><div class="subtle">Here’s your overview for ${monthName(state.year,state.month)}</div></div><div class="leaf">🌿</div></section>
- <section class="section grid2">
+ main.innerHTML=`<section class="section grid2">
   ${card('Spending',fmtMoney(spent),`of ${fmtMoney(totalBudget)} budget`)}
   ${card('Sleep',sm.sleep||'—',sm.sleep?'last recorded today':'tap to record')}
   <div class="card stat-card" onclick="openSleepMood('${t}')"><h3>Mood</h3>${sm.mood?`${moodArt(sm.mood,'legend-face')}<div class="stat-main" style="font-size:18px">${moodList.find(x=>x[1]===sm.mood)?.[0]||''}</div>`:'<div class="stat-main">—</div><div class="subtle">tap to record</div>'}</div>
