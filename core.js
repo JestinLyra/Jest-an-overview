@@ -57,7 +57,7 @@ function renderHome(){
   ${card('Period',per.bleeding?per.bleeding:'No entry',per.bleeding?'bleeding logged':'tap to record')}
  </section>
  <section class="section home-quote-shell"><div class="home-quote-art" aria-label="Live healthier. Feel happier. Spend smarter."></div></section>
- <section class="section home-secondary-switcher" aria-label="Additional trackers"><button class="home-secondary-tracker" onclick="openMeals()"><span class="meal-switch-icon">◉</span><span><strong>Meals</strong><small>Meal prep · takeaway · spending</small></span><span class="switch-arrow">›</span></button></section>
+ <section class="section home-secondary-tracker-shell" data-art-ready="false" style="--secondary-tracker-count:1" aria-label="Additional trackers"><div class="home-secondary-tracker-art" aria-hidden="true"></div><div class="home-secondary-tracker-zones"><button class="home-secondary-tracker-zone" aria-label="Meals" onclick="openMeals()">Meals<small>Meal prep · takeaway · spending</small></button></div></section>
  <section class="section home-tracker-shell" data-art-ready="true"><div class="home-tracker-art" aria-hidden="true"></div><div class="segmented tracker-switch home-tracker-fallback"><button class="home-tracker-zone" aria-label="Sleep + Mood" onclick="openTracker('sleep')">Sleep + Mood</button><button class="home-tracker-zone" aria-label="Period" onclick="openTracker('period')">Period</button><button class="home-tracker-zone" aria-label="Water + Sweets" onclick="openTracker('water')">Water + Sugar</button></div></section></div>`;
 }
 function openMeals(){state.route='meals';state.mealsView='monthly';state.year=today.getFullYear();state.month=today.getMonth();renderMeals();}
