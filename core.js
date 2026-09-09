@@ -45,7 +45,7 @@ function currentWeekTotal(){const now=new Date(); const day=(now.getDay()+6)%7; 
 function renderHome(){
  const ps=currentMonthPurchases(), spent=ps.reduce((s,p)=>s+Number(p.amount),0), totalBudget=db.budgets.inStore+db.budgets.online;
  const t=iso(today), sm=db.sleepMood[t]||{}, per=db.period[t]||{}, ws=db.waterSugar[t]||{};
- main.innerHTML=`<section class="section grid2">
+ main.innerHTML=`<div class="home-page"><section class="section grid2">
   ${card('Spending',fmtMoney(spent),`of ${fmtMoney(totalBudget)} budget`)}
   ${card('Sleep',sm.sleep||'—',sm.sleep?'last recorded today':'tap to record')}
   <div class="card stat-card" onclick="openSleepMood('${t}')"><h3>Mood</h3>${sm.mood?`${moodArt(sm.mood,'legend-face')}<div class="stat-main" style="font-size:18px">${moodList.find(x=>x[1]===sm.mood)?.[0]||''}</div>`:'<div class="stat-main">—</div><div class="subtle">tap to record</div>'}</div>
@@ -53,7 +53,7 @@ function renderHome(){
   ${card('Sugar',ws.sugar!=null?`${ws.sugar} serving${ws.sugar===1?'':'s'}`:'—','today')}
   ${card('Period',per.bleeding?per.bleeding:'No entry',per.bleeding?'bleeding logged':'tap to record')}
  </section>
- <section class="section card"><div class="script" style="text-align:center">A healthier, happier you is always a good idea ♡</div></section>
- <section class="section"><div class="segmented tracker-switch"><button onclick="openTracker('sleep')">Sleep + Mood</button><button onclick="openTracker('period')">Period</button><button onclick="openTracker('water')">Water + Sugar</button></div></section>`;
+ <section class="section home-quote-shell" data-art-ready="false"><div class="home-quote-art" aria-hidden="true"></div><div class="card home-quote-fallback"><div class="script" style="text-align:center">A healthier, happier you is always a good idea ♡</div></div></section>
+ <section class="section home-tracker-shell" data-art-ready="false"><div class="home-tracker-art" aria-hidden="true"></div><div class="segmented tracker-switch home-tracker-fallback"><button class="home-tracker-zone" onclick="openTracker('sleep')">Sleep + Mood</button><button class="home-tracker-zone" onclick="openTracker('period')">Period</button><button class="home-tracker-zone" onclick="openTracker('water')">Water + Sugar</button></div></section></div>`;
 }
 function openTracker(which){state.route='home';state.track=which; if(which==='sleep') renderSleepMood(); if(which==='period') renderPeriod(); if(which==='water') renderWaterSugar();}
