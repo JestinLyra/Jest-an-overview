@@ -27,6 +27,7 @@ const moodArt=(k,cls='')=>`<span class="mood-art mood-${k} ${cls}" aria-hidden="
 const symptomImg=k=>`assets/symptom-${k}.webp`;
 const daysIn=(y,m)=>new Date(y,m+1,0).getDate();
 const mk=()=>`${state.year}-${pad(state.month+1)}`;
+const displaySleep=value=>value==='>8'?'8 or more':value;
 
 function setRoute(route){state.route=route; $$('.nav-btn[data-route]').forEach(b=>b.classList.toggle('active',b.dataset.route===route)); render();}
 
@@ -45,9 +46,10 @@ function currentWeekTotal(){const now=new Date(); const day=(now.getDay()+6)%7; 
 function renderHome(){
  const ps=currentMonthPurchases(), spent=ps.reduce((s,p)=>s+Number(p.amount),0), totalBudget=db.budgets.inStore+db.budgets.online;
  const t=iso(today), sm=db.sleepMood[t]||{}, per=db.period[t]||{}, ws=db.waterSugar[t]||{};
+ const homeSleep=displaySleep(sm.sleep);
  main.innerHTML=`<div class="home-page"><section class="section grid2">
   ${card('Shopping',fmtMoney(spent),`of ${fmtMoney(totalBudget)} budget`)}
-  ${card('Sleep',sm.sleep||'—',sm.sleep?'last recorded today':'tap to record')}
+  ${card('Sleep',homeSleep||'—',sm.sleep?'last recorded today':'tap to record')}
   <div class="card stat-card" onclick="openSleepMood('${t}')"><h3>Mood</h3>${sm.mood?`${moodArt(sm.mood,'legend-face')}<div class="stat-main" style="font-size:18px">${moodList.find(x=>x[1]===sm.mood)?.[0]||''}</div>`:'<div class="stat-main">—</div><div class="subtle">tap to record</div>'}</div>
   ${card('Water',ws.water?`${ws.water} L`:'—','today')}
   ${card('Sugar',ws.sugar!=null?`${ws.sugar} serving${ws.sugar===1?'':'s'}`:'—','today')}
