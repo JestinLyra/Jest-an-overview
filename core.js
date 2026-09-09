@@ -53,7 +53,7 @@ function renderHome(){
   ${card('Sugar',ws.sugar!=null?`${ws.sugar} serving${ws.sugar===1?'':'s'}`:'—','today')}
   ${card('Period',per.bleeding?per.bleeding:'No entry',per.bleeding?'bleeding logged':'tap to record')}
  </section>
- <section class="section home-quote-shell" data-art-ready="true"><div class="home-quote-art" aria-label="Live healthier. Feel happier. Spend smarter."></div><div class="card home-quote-fallback"><div class="script" style="text-align:center">A healthier, happier you is always a good idea ♡</div></div></section>
+ <section class="section home-quote-shell"><div class="home-quote-art" aria-label="Live healthier. Feel happier. Spend smarter."></div></section>
  <section class="section home-tracker-shell" data-art-ready="true"><div class="home-tracker-art" aria-hidden="true"></div><div class="segmented tracker-switch home-tracker-fallback"><button class="home-tracker-zone" aria-label="Sleep + Mood" onclick="openTracker('sleep')">Sleep + Mood</button><button class="home-tracker-zone" aria-label="Period" onclick="openTracker('period')">Period</button><button class="home-tracker-zone" aria-label="Water + Sweets" onclick="openTracker('water')">Water + Sugar</button></div></section></div>`;
 }
 function openTracker(which){state.route='home';state.track=which; if(which==='sleep') renderSleepMood(); if(which==='period') renderPeriod(); if(which==='water') renderWaterSugar();}
