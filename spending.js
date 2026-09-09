@@ -5,7 +5,7 @@ function renderSpending(){
  const tax=ps.filter(p=>p.tax==='potential').reduce((s,p)=>s+Number(p.amount),0);
  const delivs=ps.filter(p=>p.type==='online'&&p.delivery&&new Date(p.delivery+'T12:00:00')>=new Date(new Date().toDateString())).sort((a,b)=>a.delivery.localeCompare(b.delivery)).slice(0,4);
  main.innerHTML=`<div class="shopping-page">
- <section class="card top-summary"><div class="section-head"><div><h1 class="page-title">Spending</h1><div class="subtle">Online + in-store shopping overview</div></div><button class="btn" onclick="openPurchase()">+ Add</button></div>${monthNav()}
+ <section class="card top-summary"><div class="section-head"><div><h1 class="page-title">Shopping</h1><div class="subtle">Online + in-store shopping overview</div></div><button class="btn" onclick="openPurchase()">+ Add</button></div>${monthNav()}
  <div class="money">${fmtMoney(total)}</div><div class="subtle">of ${fmtMoney(db.budgets.inStore+db.budgets.online)} monthly budget</div><div class="mini-bar"><i style="width:${pct}%"></i></div></section>
  <section class="section spend-grid">${budgetTile('In store',inStore,db.budgets.inStore,'lav')}${budgetTile('Online',online,db.budgets.online,'sea')}</section>
  <section class="section card"><div class="section-head"><h2>Cards</h2><span class="subtle">money left</span></div><div class="grid2">${['Mx','Up','Co'].map(c=>{const left=db.cardLimits[c]-cardSpent(c);return `<div><strong>${c}</strong><div class="money" style="font-size:18px">${fmtMoney(left)}</div><div class="subtle">of ${fmtMoney(db.cardLimits[c])}</div></div>`}).join('')}</div></section>
