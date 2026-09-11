@@ -38,6 +38,7 @@ function setRoute(route){
 }
 
 function card(title,value,sub='',cls=''){return `<div class="card stat-card ${cls}"><h3>${title}</h3><div class="stat-main">${value}</div>${sub?`<div class="subtle">${sub}</div>`:''}</div>`}
+function homeCard(title,value,sub,onclick){return `<button class="card stat-card home-stat-action" type="button" onclick="${onclick}"><h3>${title}</h3><div class="stat-main">${value}</div>${sub?`<div class="subtle">${sub}</div>`:''}</button>`}
 function navMonth(delta){state.month+=delta;if(state.month<0){state.month=11;state.year--}if(state.month>11){state.month=0;state.year++}if(state.route==='meals')return renderMeals();if(state.route==='home'&&state.track==='sleep'&&document.querySelector('.page-title')?.textContent==='Sleep + Mood')return renderSleepMood();if(state.route==='home'&&state.track==='period'&&document.querySelector('.page-title')?.textContent==='Period + Symptoms')return renderPeriod();if(state.route==='home'&&state.track==='water'&&document.querySelector('.page-title')?.textContent==='Water + Sugar')return renderWaterSugar();render();}
 function monthNav(){return `<div class="month-nav"><button onclick="navMonth(-1)">‹</button><strong>${monthName(state.year,state.month)}</strong><button onclick="navMonth(1)">›</button></div>`}
 
@@ -56,12 +57,12 @@ function renderHome(){
  const t=iso(today), sm=db.sleepMood[t]||{}, per=db.period[t]||{}, ws=db.waterSugar[t]||{};
  const homeSleep=displaySleep(sm.sleep);
  main.innerHTML=`<div class="home-page"><section class="section grid2">
-  ${card('Shopping',fmtMoney(spent),`of ${fmtMoney(totalBudget)} budget`)}
-  ${card('Sleep',homeSleep||'—',sm.sleep?'last recorded today':'tap to record')}
-  <div class="card stat-card" onclick="openSleepMood('${t}')"><h3>Mood</h3>${sm.mood?`${moodArt(sm.mood,'legend-face')}<div class="stat-main" style="font-size:18px">${moodList.find(x=>x[1]===sm.mood)?.[0]||''}</div>`:'<div class="stat-main">—</div><div class="subtle">tap to record</div>'}</div>
-  ${card('Water',ws.water?`${ws.water} L`:'—','today')}
-  ${card('Sugar',ws.sugar!=null?`${ws.sugar} serving${ws.sugar===1?'':'s'}`:'—','today')}
-  ${card('Period',per.bleeding?per.bleeding:'No entry',per.bleeding?'bleeding logged':'tap to record')}
+  ${homeCard('Shopping',fmtMoney(spent),`of ${fmtMoney(totalBudget)} budget`,`setRoute('spending')`)}
+  ${homeCard('Sleep',homeSleep||'—',sm.sleep?'last recorded today':'tap to record',`openSleepMood('${t}')`)}
+  <button class="card stat-card home-stat-action" type="button" onclick="openSleepMood('${t}')"><h3>Mood</h3>${sm.mood?`${moodArt(sm.mood,'legend-face')}<div class="stat-main" style="font-size:18px">${moodList.find(x=>x[1]===sm.mood)?.[0]||''}</div>`:'<div class="stat-main">—</div><div class="subtle">tap to record</div>'}</button>
+  ${homeCard('Water',ws.water?`${ws.water} L`:'—','today',`openWaterSugar('${t}')`)}
+  ${homeCard('Sugar',ws.sugar!=null?`${ws.sugar} serving${ws.sugar===1?'':'s'}`:'—','today',`openWaterSugar('${t}')`)}
+  ${homeCard('Period',per.bleeding?per.bleeding:'No entry',per.bleeding?'bleeding logged':'tap to record',`openPeriod('${t}')`)}
  </section>
  <div class="home-control-stack">
   <section class="home-quote-shell"><div class="home-quote-art" aria-label="Live healthier. Feel happier. Spend smarter."></div></section>
