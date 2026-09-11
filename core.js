@@ -38,7 +38,7 @@ function setRoute(route){
 }
 
 function card(title,value,sub='',cls=''){return `<div class="card stat-card ${cls}"><h3>${title}</h3><div class="stat-main">${value}</div>${sub?`<div class="subtle">${sub}</div>`:''}</div>`}
-function homeCard(title,value,sub,onclick){return `<button class="card stat-card home-stat-action" type="button" style="text-align:left;color:inherit;width:100%" onclick="${onclick}"><h3>${title}</h3><div class="stat-main">${value}</div>${sub?`<div class="subtle">${sub}</div>`:''}</button>`}
+function homeCard(title,value,sub,onclick){return `<div class="card stat-card home-stat-action" role="button" tabindex="0" onclick="${onclick}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${onclick}}"><h3>${title}</h3><div class="stat-main">${value}</div>${sub?`<div class="subtle">${sub}</div>`:''}</div>`}
 function navMonth(delta){state.month+=delta;if(state.month<0){state.month=11;state.year--}if(state.month>11){state.month=0;state.year++}if(state.route==='meals')return renderMeals();if(state.route==='home'&&state.track==='sleep'&&document.querySelector('.page-title')?.textContent==='Sleep + Mood')return renderSleepMood();if(state.route==='home'&&state.track==='period'&&document.querySelector('.page-title')?.textContent==='Period + Symptoms')return renderPeriod();if(state.route==='home'&&state.track==='water'&&document.querySelector('.page-title')?.textContent==='Water + Sugar')return renderWaterSugar();render();}
 function monthNav(){return `<div class="month-nav"><button onclick="navMonth(-1)">‹</button><strong>${monthName(state.year,state.month)}</strong><button onclick="navMonth(1)">›</button></div>`}
 
@@ -59,7 +59,7 @@ function renderHome(){
  main.innerHTML=`<div class="home-page"><section class="section grid2">
   ${homeCard('Shopping',fmtMoney(spent),`of ${fmtMoney(totalBudget)} budget`,`setRoute('spending')`)}
   ${homeCard('Sleep',homeSleep||'—',sm.sleep?'last recorded today':'tap to record',`openSleepMood('${t}')`)}
-  <button class="card stat-card home-stat-action" type="button" style="text-align:left;color:inherit;width:100%" onclick="openSleepMood('${t}')"><h3>Mood</h3>${sm.mood?`${moodArt(sm.mood,'legend-face')}<div class="stat-main" style="font-size:18px">${moodList.find(x=>x[1]===sm.mood)?.[0]||''}</div>`:'<div class="stat-main">—</div><div class="subtle">tap to record</div>'}</button>
+  <div class="card stat-card home-stat-action" role="button" tabindex="0" onclick="openSleepMood('${t}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSleepMood('${t}')}" ><h3>Mood</h3>${sm.mood?`${moodArt(sm.mood,'legend-face')}<div class="stat-main" style="font-size:18px">${moodList.find(x=>x[1]===sm.mood)?.[0]||''}</div>`:'<div class="stat-main">—</div><div class="subtle">tap to record</div>'}</div>
   ${homeCard('Water',ws.water?`${ws.water} L`:'—','today',`openWaterSugar('${t}')`)}
   ${homeCard('Sugar',ws.sugar!=null?`${ws.sugar} serving${ws.sugar===1?'':'s'}`:'—','today',`openWaterSugar('${t}')`)}
   ${homeCard('Period',per.bleeding?per.bleeding:'No entry',per.bleeding?'bleeding logged':'tap to record',`openPeriod('${t}')`)}
