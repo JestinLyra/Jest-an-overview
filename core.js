@@ -8,7 +8,7 @@ const fmtMoney=n=>new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD'
 const fmtDate=s=>new Date(`${s}T12:00:00`).toLocaleDateString('en-AU',{day:'numeric',month:'short'});
 const monthName=(y,m)=>new Date(y,m,1).toLocaleDateString('en-AU',{month:'long',year:'numeric'});
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2);
-const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const state={route:'home',track:'sleep',year:today.getFullYear(),month:today.getMonth(),smView:'monthly',mealsView:'monthly',mealDate:iso(today)};
 const defaults={
  purchases:[], cardLimits:{Mx:300,Up:250,Co:250}, budgets:{inStore:350,online:250},
@@ -66,7 +66,7 @@ function renderHome(){
  </section>
  <div class="home-control-stack">
   <section class="home-quote-shell"><div class="home-quote-art" aria-label="Live healthier. Feel happier. Spend smarter."></div></section>
-  <section class="home-secondary-tracker-shell" style="--secondary-tracker-count:1" aria-label="Additional trackers"><img class="home-secondary-tracker-art" src="assets/home-secondary-tracker-switcher.webp?v=1.9.7" alt="Meals"/><div class="home-secondary-tracker-zones"><button class="home-secondary-tracker-zone" aria-label="Meals" onclick="openMeals()">Meals<small>Meal prep · takeaway · spending</small></button></div></section>
+  <section class="home-secondary-tracker-shell" data-art-ready="true" style="--secondary-tracker-count:1" aria-label="Additional trackers"><div class="home-secondary-tracker-art" aria-hidden="true"></div><div class="home-secondary-tracker-zones"><button class="home-secondary-tracker-zone" aria-label="Meals" onclick="openMeals()">Meals<small>Meal prep · takeaway · spending</small></button></div></section>
   <section class="home-tracker-shell" data-art-ready="true"><div class="home-tracker-art" aria-hidden="true"></div><div class="segmented tracker-switch home-tracker-fallback"><button class="home-tracker-zone" aria-label="Sleep + Mood" onclick="openTracker('sleep')">Sleep + Mood</button><button class="home-tracker-zone" aria-label="Period" onclick="openTracker('period')">Period</button><button class="home-tracker-zone" aria-label="Water + Sweets" onclick="openTracker('water')">Water + Sugar</button></div></section>
  </div></div>`;
 }
