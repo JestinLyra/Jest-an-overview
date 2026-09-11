@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 360" role="img" aria-labelledby="title desc">
+  <title id="title">Meals</title>
+  <desc id="desc">Glossy pale blue Meals switcher with mint fork and knife icon.</desc>
+  <defs>
+    <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbfdff"/>
+      <stop offset="0.55" stop-color="#f3f8fd"/>
+      <stop offset="1" stop-color="#eaf2fa"/>
+    </linearGradient>
+    <linearGradient id="mint" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#83ebd0"/>
+      <stop offset="0.55" stop-color="#58d1b6"/>
+      <stop offset="1" stop-color="#36ae94"/>
+    </linearGradient>
+    <linearGradient id="whiteGloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#eaf1f7"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-30%" width="140%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#7f95ab" flood-opacity="0.22"/>
+    </filter>
+    <filter id="iconShadow" x="-35%" y="-35%" width="170%" height="180%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#2a876f" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#softShadow)">
+    <rect x="24" y="34" width="1552" height="292" rx="72" fill="url(#bar)" stroke="#dce7f3" stroke-width="5"/>
+    <rect x="38" y="47" width="1524" height="264" rx="61" fill="none" stroke="#ffffff" stroke-opacity="0.78" stroke-width="4"/>
+    <path d="M82 70H1518" stroke="#ffffff" stroke-opacity="0.68" stroke-width="8" stroke-linecap="round"/>
+  </g>
+
+  <g filter="url(#iconShadow)">
+    <circle cx="166" cy="180" r="88" fill="url(#mint)"/>
+    <ellipse cx="142" cy="133" rx="39" ry="15" fill="#ffffff" opacity="0.34" transform="rotate(-28 142 133)"/>
+
+    <g fill="url(#whiteGloss)">
+      <rect x="128" y="141" width="15" height="103" rx="8"/>
+      <rect x="108" y="112" width="13" height="54" rx="7"/>
+      <rect x="128" y="112" width="13" height="54" rx="7"/>
+      <rect x="148" y="112" width="13" height="54" rx="7"/>
+      <path d="M114 151c0 22 13 34 21 34s21-12 21-34h-12c0 12-4 19-9 19s-9-7-9-19z"/>
+      <path d="M189 111c20 0 30 15 30 42v91c0 8-6 14-14 14s-14-6-14-14v-62c-11-3-18-13-18-26 0-20 6-45 16-45z"/>
+    </g>
+
+    <g fill="#64d5ba">
+      <rect x="232" y="92" width="14" height="37" rx="7" transform="rotate(8 239 111)"/>
+      <rect x="253" y="105" width="14" height="37" rx="7" transform="rotate(43 260 124)"/>
+      <rect x="266" y="127" width="14" height="37" rx="7" transform="rotate(77 273 146)"/>
+    </g>
+  </g>
+
+  <text x="304" y="205" fill="#173c70" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="76" font-weight="700" letter-spacing="-1.5">Meals</text>
+</svg>
