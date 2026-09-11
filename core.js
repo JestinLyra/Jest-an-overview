@@ -8,13 +8,14 @@ const fmtMoney=n=>new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD'
 const fmtDate=s=>new Date(`${s}T12:00:00`).toLocaleDateString('en-AU',{day:'numeric',month:'short'});
 const monthName=(y,m)=>new Date(y,m,1).toLocaleDateString('en-AU',{month:'long',year:'numeric'});
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2);
+const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const state={route:'home',track:'sleep',year:today.getFullYear(),month:today.getMonth(),smView:'monthly',mealsView:'monthly',mealDate:iso(today)};
 const defaults={
  purchases:[], cardLimits:{Mx:300,Up:250,Co:250}, budgets:{inStore:350,online:250},
  sleepMood:{}, period:{}, waterSugar:{}, meals:{}
 };
 let db=JSON.parse(localStorage.getItem('jest-db')||'null')||defaults;
-db={...defaults,...db,cardLimits:{...defaults.cardLimits,...(db.cardLimits||{})},budgets:{...defaults.budgets,...(db.budgets||{})},meals:{...(db.meals||{})}};
+db={...defaults,...db,cardLimits:{...defaults.cardLimits,...(db.cardLimits||{})},budgets:{...defaults.budgets,...(db.budgets||{})},sleepMood:{...(db.sleepMood||{})},period:{...(db.period||{})},waterSugar:{...(db.waterSugar||{})},meals:{...(db.meals||{})},purchases:Array.isArray(db.purchases)?db.purchases:[]};
 const save=()=>localStorage.setItem('jest-db',JSON.stringify(db));
 
 const moodList=[
@@ -29,7 +30,12 @@ const daysIn=(y,m)=>new Date(y,m+1,0).getDate();
 const mk=()=>`${state.year}-${pad(state.month+1)}`;
 const displaySleep=value=>value==='>8'?'8 or more':value;
 
-function setRoute(route){state.route=route; $$('.nav-btn[data-route]').forEach(b=>b.classList.toggle('active',b.dataset.route===route)); render();}
+function setRoute(route){
+ state.route=route;
+ if(route==='home'){state.year=today.getFullYear();state.month=today.getMonth();state.smView='monthly'}
+ $$('.nav-btn[data-route]').forEach(b=>b.classList.toggle('active',b.dataset.route===route));
+ render();
+}
 
 function card(title,value,sub='',cls=''){return `<div class="card stat-card ${cls}"><h3>${title}</h3><div class="stat-main">${value}</div>${sub?`<div class="subtle">${sub}</div>`:''}</div>`}
 function navMonth(delta){state.month+=delta;if(state.month<0){state.month=11;state.year--}if(state.month>11){state.month=0;state.year++}if(state.route==='meals')return renderMeals();if(state.route==='home'&&state.track==='sleep'&&document.querySelector('.page-title')?.textContent==='Sleep + Mood')return renderSleepMood();if(state.route==='home'&&state.track==='period'&&document.querySelector('.page-title')?.textContent==='Period + Symptoms')return renderPeriod();if(state.route==='home'&&state.track==='water'&&document.querySelector('.page-title')?.textContent==='Water + Sugar')return renderWaterSugar();render();}
@@ -42,10 +48,11 @@ function render(){
  if(state.route==='more') return renderMore();
  if(state.route==='meals') return renderMeals();
 }
-function currentMonthPurchases(){const k=mk();return db.purchases.filter(p=>p.date.startsWith(k));}
-function currentWeekTotal(){const now=new Date(); const day=(now.getDay()+6)%7; const mon=new Date(now);mon.setHours(0,0,0,0);mon.setDate(now.getDate()-day);const sun=new Date(mon);sun.setDate(mon.getDate()+6);return db.purchases.filter(p=>{const d=new Date(p.date+'T12:00:00');return d>=mon&&d<=sun}).reduce((s,p)=>s+Number(p.amount),0)}
+function purchasesForMonth(y,m){const k=`${y}-${pad(m+1)}`;return db.purchases.filter(p=>typeof p?.date==='string'&&p.date.startsWith(k));}
+function currentMonthPurchases(){return purchasesForMonth(state.year,state.month)}
+function currentWeekTotal(){const now=new Date(); const day=(now.getDay()+6)%7; const mon=new Date(now);mon.setHours(0,0,0,0);mon.setDate(now.getDate()-day);const sun=new Date(mon);sun.setDate(mon.getDate()+6);return db.purchases.filter(p=>{if(typeof p?.date!=='string')return false;const d=new Date(p.date+'T12:00:00');return d>=mon&&d<=sun}).reduce((s,p)=>s+Number(p.amount||0),0)}
 function renderHome(){
- const ps=currentMonthPurchases(), spent=ps.reduce((s,p)=>s+Number(p.amount),0), totalBudget=db.budgets.inStore+db.budgets.online;
+ const ps=purchasesForMonth(today.getFullYear(),today.getMonth()), spent=ps.reduce((s,p)=>s+Number(p.amount||0),0), totalBudget=db.budgets.inStore+db.budgets.online;
  const t=iso(today), sm=db.sleepMood[t]||{}, per=db.period[t]||{}, ws=db.waterSugar[t]||{};
  const homeSleep=displaySleep(sm.sleep);
  main.innerHTML=`<div class="home-page"><section class="section grid2">
@@ -62,5 +69,5 @@ function renderHome(){
   <section class="home-tracker-shell" data-art-ready="true"><div class="home-tracker-art" aria-hidden="true"></div><div class="segmented tracker-switch home-tracker-fallback"><button class="home-tracker-zone" aria-label="Sleep + Mood" onclick="openTracker('sleep')">Sleep + Mood</button><button class="home-tracker-zone" aria-label="Period" onclick="openTracker('period')">Period</button><button class="home-tracker-zone" aria-label="Water + Sweets" onclick="openTracker('water')">Water + Sugar</button></div></section>
  </div></div>`;
 }
-function openMeals(){state.route='meals';state.mealsView='monthly';state.year=today.getFullYear();state.month=today.getMonth();renderMeals();}
-function openTracker(which){state.route='home';state.track=which; if(which==='sleep') renderSleepMood(); if(which==='period') renderPeriod(); if(which==='water') renderWaterSugar();}
+function openMeals(){state.route='meals';state.mealsView='monthly';state.year=today.getFullYear();state.month=today.getMonth();state.mealDate=iso(today);renderMeals();}
+function openTracker(which){state.route='home';state.track=which;state.year=today.getFullYear();state.month=today.getMonth();if(which==='sleep'){state.smView='monthly';renderSleepMood()}if(which==='period')renderPeriod();if(which==='water')renderWaterSugar();}
