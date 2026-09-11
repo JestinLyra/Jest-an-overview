@@ -1,7 +1,7 @@
-/* Approved soft-3D period symptom artwork — v1.9.9
+/* Approved soft-3D period symptom artwork — v1.9.10
    One canonical sprite replaces the retired individual symptom binaries. */
 .symptom-chip img[src*="symptom-"],#symChoices .check-choice img[src*="symptom-"]{display:none!important}
-.symptom-chip::before,#symChoices .check-choice::before{content:"";display:block;flex:0 0 auto;aspect-ratio:1/1;background-image:url("assets/symptom-sprite-approved.webp?v=1.9.9");background-repeat:no-repeat;background-size:300% 300%;background-position:var(--symptom-x,0%) var(--symptom-y,0%);box-shadow:0 2px 8px rgba(23,58,109,.08)}
+.symptom-chip::before,#symChoices .check-choice::before{content:"";display:block;flex:0 0 auto;aspect-ratio:1/1;background-image:url("assets/symptom-sprite-approved.webp?v=1.9.10");background-repeat:no-repeat;background-size:300% 300%;background-position:var(--symptom-x,0%) var(--symptom-y,0%);box-shadow:0 2px 8px rgba(23,58,109,.08)}
 .symptom-chip::before{width:68px;height:68px;margin:0 auto 6px;border-radius:18px}
 #symChoices .check-choice::before{width:48px;height:48px;margin:0 auto 5px;border-radius:13px}
 .symptom-chip:has(img[src*="symptom-cramps.webp"])::before,#symChoices .check-choice:has(img[src*="symptom-cramps.webp"])::before{--symptom-x:0%;--symptom-y:0%}
