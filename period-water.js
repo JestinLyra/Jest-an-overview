@@ -1,8 +1,17 @@
+function periodSymptomArt(key){return `<span class="period-symptom-art period-symptom-${key}" aria-hidden="true"></span>`}
 function renderPeriod(){
- const n=daysIn(state.year,state.month);let g='<div class="period-grid"><div></div><div class="hdr">Bleeding</div>'+symptoms.map(s=>`<div class="hdr">${s[0]}</div>`).join('');
- for(let d=1;d<=n;d++){const date=`${mk()}-${pad(d)}`,v=db.period[date]||{}, ss=v.symptoms||[];g+=`<div class="daynum">${d}</div><div class="sq" onclick="openPeriod('${date}')">${v.bleeding?`<i class="bleed-dot bleed-${v.bleeding.toLowerCase()}"></i>`:''}</div>`;for(const s of symptoms)g+=`<div class="sq ${ss.includes(s[1])?'checked':''}" onclick="openPeriod('${date}')">${ss.includes(s[1])?'✓':''}</div>`}g+='</div>';
- const entries=Object.entries(db.period).filter(([k])=>k.startsWith(mk())), bleeding=entries.filter(([,v])=>v.bleeding).length;const counts={};entries.forEach(([,v])=>(v.symptoms||[]).forEach(x=>counts[x]=(counts[x]||0)+1));const common=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
- main.innerHTML=`<section><div class="section-head"><div><h1 class="page-title">Period + Symptoms</h1><div class="subtle">Bleeding, symptoms and daily notes</div></div><button class="btn" onclick="openPeriod('${iso(today)}')">Log today</button></div>${monthNav()}<div class="card period-grid-wrap">${g}</div>
+ const n=daysIn(state.year,state.month),firstDay=new Date(state.year,state.month,1).getDay();
+ let cal='<div class="period-calendar"><div class="period-weekday">Sun</div><div class="period-weekday">Mon</div><div class="period-weekday">Tue</div><div class="period-weekday">Wed</div><div class="period-weekday">Thu</div><div class="period-weekday">Fri</div><div class="period-weekday">Sat</div>';
+ for(let i=0;i<firstDay;i++)cal+='<div class="period-cal-blank" aria-hidden="true"></div>';
+ for(let d=1;d<=n;d++){
+  const date=`${mk()}-${pad(d)}`,v=db.period[date]||{},ss=v.symptoms||[],bleed=(v.bleeding||'none').toLowerCase().replace(/\s+/g,'-');
+  cal+=`<button class="period-cal-day period-bleed-${bleed}" onclick="openPeriod('${date}')" aria-label="${fmtDate(date)}"><span class="period-cal-date">${d}</span><span class="period-cal-symptoms">${ss.map(periodSymptomArt).join('')}</span></button>`;
+ }
+ cal+='</div>';
+ const entries=Object.entries(db.period).filter(([k])=>k.startsWith(mk())),bleeding=entries.filter(([,v])=>v.bleeding).length;const counts={};entries.forEach(([,v])=>(v.symptoms||[]).forEach(x=>counts[x]=(counts[x]||0)+1));const common=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+ const bleedGuide=[['No bleeding','none'],['Spotting','spotting'],['Light','light'],['Moderate','moderate'],['Heavy','heavy']];
+ main.innerHTML=`<section><div class="section-head"><div><h1 class="page-title">Period + Symptoms</h1><div class="subtle">Bleeding, symptoms and daily notes</div></div><button class="btn" onclick="openPeriod('${iso(today)}')">Log today</button></div>${monthNav()}<div class="card period-calendar-wrap">${cal}</div>
+ <section class="section card"><div class="section-head"><h2>Bleeding colour guide</h2></div><div class="period-bleed-guide">${bleedGuide.map(x=>`<div class="period-bleed-key"><i class="period-bleed-swatch period-bleed-${x[1]}"></i><span>${x[0]}</span></div>`).join('')}</div></section>
  <section class="section card"><div class="section-head"><h2>Symptom legend</h2></div><div class="symptom-legend">${symptoms.map(s=>`<div class="symptom-chip"><img src="${symptomImg(s[1])}">${s[0]}</div>`).join('')}</div></section>
  <section class="section grid2">${card('Bleeding days',String(bleeding),'this month')}${card('Most common symptom',common?symptoms.find(s=>s[1]===common[0])?.[0]:'—',common?`${common[1]} day${common[1]===1?'':'s'}`:'none logged')}</section></section>`;
 }
