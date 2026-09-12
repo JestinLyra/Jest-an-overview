@@ -1,0 +1,19 @@
+/* Period + Symptoms monthly calendar — v1.9.11 */
+.period-calendar-wrap{padding:10px;overflow:hidden}
+.period-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.period-weekday{text-align:center;font-size:10px;font-weight:700;color:var(--muted);padding:2px 0 4px}
+.period-cal-blank{aspect-ratio:1/1}
+.period-cal-day{position:relative;aspect-ratio:1/1;border:1px solid #e3e9ee;border-radius:12px;padding:5px;background:#f8fafb;color:var(--navy);overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;box-shadow:none}
+.period-cal-date{font-size:11px;font-weight:700;line-height:1;position:relative;z-index:2}
+.period-cal-symptoms{width:100%;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:2px;flex:1;min-height:0;padding:2px 0 0}
+.period-symptom-art{--sx:0%;--sy:0%;display:block;width:21px;height:21px;flex:0 0 21px;border-radius:6px;background-image:url('assets/symptom-sprite-approved.webp?v=1.9.11');background-repeat:no-repeat;background-size:300% 300%;background-position:var(--sx) var(--sy)}
+.period-symptom-cramps{--sx:0%;--sy:0%}.period-symptom-bloating{--sx:50%;--sy:0%}.period-symptom-headache{--sx:100%;--sy:0%}.period-symptom-mood-changes{--sx:0%;--sy:50%}.period-symptom-back-pain{--sx:50%;--sy:50%}.period-symptom-breast-tenderness{--sx:100%;--sy:50%}.period-symptom-food-cravings{--sx:0%;--sy:100%}.period-symptom-sleep-issues{--sx:50%;--sy:100%}.period-symptom-easily-annoyed{--sx:100%;--sy:100%}
+.period-bleed-none{background:#f8fafb}
+.period-bleed-spotting{background:#ead8c4}
+.period-bleed-light{background:#fbe0e8}
+.period-bleed-moderate{background:#f5b5c5}
+.period-bleed-heavy{background:#e9829a}
+.period-bleed-guide{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.period-bleed-key{text-align:center;font-size:9px;color:var(--navy)}
+.period-bleed-swatch{display:block;width:100%;height:28px;border:1px solid #e3e9ee;border-radius:9px;margin-bottom:5px}
+@media(max-width:390px){.period-calendar{gap:4px}.period-cal-day{border-radius:10px;padding:4px}.period-cal-date{font-size:10px}.period-symptom-art{width:18px;height:18px;flex-basis:18px}.period-bleed-guide{gap:4px}.period-bleed-key{font-size:8px}}
