@@ -3,7 +3,7 @@
 .home-quote-art{display:block;width:100%;aspect-ratio:45/8;background:url('assets/home-quote-card.webp?v=1.9.17') center/contain no-repeat}
 
 /* Secondary Home tracker switcher. Visible SVG artwork + independent tap zones. */
-.home-secondary-tracker-shell{--secondary-tracker-count:1;position:relative;margin-top:8px}
+.home-secondary-tracker-shell{--secondary-tracker-count:1;position:relative;margin-top:8px;isolation:isolate;overflow:hidden}
 .home-secondary-tracker-art{display:block;width:100%;aspect-ratio:3/1;background:url('assets/home-secondary-tracker-switcher.svg?v=1.9.17') center/100% 100% no-repeat}
 .home-secondary-tracker-zones{position:absolute;inset:0;display:grid;grid-template-columns:repeat(var(--secondary-tracker-count),minmax(0,1fr));gap:0}
 .home-secondary-tracker-zone{min-height:44px;border:0;border-radius:0;background:transparent!important;box-shadow:none;color:transparent;padding:0}
