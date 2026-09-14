@@ -31,11 +31,11 @@
 .field{min-width:0}
 .field input,.field select,.field textarea{min-width:0;max-width:100%}
 .choice-grid>*,.check-grid>*,.grid2>*,.spend-grid>*,.insight-grid>*,.wheel-stats>*,.meal-summary-grid>*{min-width:0}
-.wellness-history-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.wellness-history-form-grid,.purchase-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 
 @media(max-width:450px){
- .wellness-history-form-grid{grid-template-columns:1fr}
- .wellness-history-form-grid>.field{grid-column:1/-1}
+ .wellness-history-form-grid,.purchase-form-grid{grid-template-columns:1fr}
+ .wellness-history-form-grid>.field,.purchase-form-grid>.field{grid-column:1/-1}
 }
 @media(max-width:390px){
  .food-legend{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:7px}
