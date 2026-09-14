@@ -1,5 +1,5 @@
 const wellnessIronLegend=[['No','no','#ffffff'],['Yes','yes','#cdb9f3'],['2 tabs','two','#8c6fd1']];
-const wellnessFoodLegend=[['No tracked iron-rich food','none','#ffffff'],['Fish','fish','#ead8c2'],['Beef','beef','#b98b62'],['Chicken','chicken','#f0dfca'],['Pork','pork','#d7b994'],['Spinach','spinach','#b9dfba']];
+const wellnessFoodLegend=[['No','none','#ffffff'],['Fish','fish','#ead8c2'],['Beef','beef','#b98b62'],['Chicken','chicken','#f0dfca'],['Pork','pork','#d7b994'],['Spinach','spinach','#b9dfba']];
 
 function wellnessEnsureData(){
  db.wellnessIntake=db.wellnessIntake&&typeof db.wellnessIntake==='object'&&!Array.isArray(db.wellnessIntake)?db.wellnessIntake:{};
@@ -33,7 +33,7 @@ function drawWellnessWheel(){
   svg+=`<path d="${wedge(180,180,78,114,a0,a1)}" fill="${iron}" stroke="#fff" stroke-width="1.4" onclick="openWellnessIntake('${date}')"/>`;
   const p=polar(180,180,121,(a0+a1)/2);svg+=`<text x="${p.x}" y="${p.y+3}" text-anchor="middle" class="wellness-wheel-day">${d}</text>`;
  }
- svg+=`<text x="180" y="176" text-anchor="middle" class="wellness-wheel-center">${monthName(state.year,state.month)}</text><text x="180" y="195" text-anchor="middle" class="wellness-wheel-sub">iron + food</text></svg>`;
+ svg+=`<text x="180" y="176" text-anchor="middle" class="wellness-wheel-center">${monthName(state.year,state.month)}</text><text x="180" y="195" text-anchor="middle" class="wellness-wheel-sub">tablet + food</text></svg>`;
  el.innerHTML=svg;
 }
 
