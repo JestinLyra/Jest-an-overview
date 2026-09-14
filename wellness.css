@@ -13,20 +13,33 @@
 .food-legend{grid-template-columns:repeat(6,minmax(0,1fr))}
 .wellness-legend-item{display:flex;align-items:center;justify-content:center;gap:5px;min-width:0;font-size:10px;white-space:nowrap}
 .wellness-legend-item i{width:16px;height:16px;border-radius:5px;border:1px solid #dfe7ed;flex:0 0 auto}
-.wellness-food-choices{grid-template-columns:repeat(2,1fr)}
+.wellness-food-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
 .wellness-history-summary{margin-top:10px}
 .wellness-history-list{display:flex;flex-direction:column;gap:8px}
-.wellness-history-row{width:100%;display:grid;grid-template-columns:minmax(95px,.8fr) 1.5fr auto;gap:10px;text-align:left;color:var(--navy);align-items:start}
-.wellness-history-row>div:first-child{display:flex;flex-direction:column;gap:3px}
+.wellness-history-row{width:100%;display:grid;grid-template-columns:minmax(95px,.8fr) minmax(0,1.5fr) auto;gap:10px;text-align:left;color:var(--navy);align-items:start}
+.wellness-history-row>div:first-child{display:flex;flex-direction:column;gap:3px;min-width:0}
 .wellness-history-row strong{font-size:12px}
 .wellness-history-row span,.wellness-history-row small{font-size:10px;color:var(--muted)}
 .wellness-history-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
 .wellness-history-copy b{font-size:11px;overflow-wrap:anywhere}
 .wellness-history-cost{font-weight:800;font-size:11px;white-space:nowrap}
-.wellness-referrals{grid-template-columns:repeat(3,1fr)}
+.wellness-referrals{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+/* Mobile form overflow safeguards used across the app. */
+.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.form-grid>*{min-width:0}
+.field{min-width:0}
+.field input,.field select,.field textarea{min-width:0;max-width:100%}
+.choice-grid>*,.check-grid>*,.grid2>*,.spend-grid>*,.insight-grid>*,.wheel-stats>*,.meal-summary-grid>*{min-width:0}
+.wellness-history-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+@media(max-width:450px){
+ .wellness-history-form-grid{grid-template-columns:1fr}
+ .wellness-history-form-grid>.field{grid-column:1/-1}
+}
 @media(max-width:390px){
  .food-legend{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:7px}
  .wellness-legend-item{font-size:9px;gap:4px}
  .wellness-legend-item i{width:14px;height:14px}
- .wellness-history-row{grid-template-columns:88px 1fr auto;gap:7px;padding:11px}
+ .wellness-history-row{grid-template-columns:88px minmax(0,1fr) auto;gap:7px;padding:11px}
 }
