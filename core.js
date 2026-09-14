@@ -9,13 +9,13 @@ const fmtDate=s=>new Date(`${s}T12:00:00`).toLocaleDateString('en-AU',{day:'nume
 const monthName=(y,m)=>new Date(y,m,1).toLocaleDateString('en-AU',{month:'long',year:'numeric'});
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2);
 const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const state={route:'home',track:'sleep',year:today.getFullYear(),month:today.getMonth(),smView:'monthly',mealsView:'monthly',mealDate:iso(today)};
+const state={route:'home',track:'sleep',year:today.getFullYear(),month:today.getMonth(),smView:'monthly',mealsView:'monthly',mealDate:iso(today),wellnessView:'intake'};
 const defaults={
  purchases:[], cardLimits:{Mx:300,Up:250,Co:250}, budgets:{inStore:350,online:250},
- sleepMood:{}, period:{}, waterSugar:{}, meals:{}
+ sleepMood:{}, period:{}, waterSugar:{}, meals:{}, wellnessIntake:{}, wellnessHistory:[]
 };
 let db=JSON.parse(localStorage.getItem('jest-db')||'null')||defaults;
-db={...defaults,...db,cardLimits:{...defaults.cardLimits,...(db.cardLimits||{})},budgets:{...defaults.budgets,...(db.budgets||{})},sleepMood:{...(db.sleepMood||{})},period:{...(db.period||{})},waterSugar:{...(db.waterSugar||{})},meals:{...(db.meals||{})},purchases:Array.isArray(db.purchases)?db.purchases:[]};
+db={...defaults,...db,cardLimits:{...defaults.cardLimits,...(db.cardLimits||{})},budgets:{...defaults.budgets,...(db.budgets||{})},sleepMood:{...(db.sleepMood||{})},period:{...(db.period||{})},waterSugar:{...(db.waterSugar||{})},meals:{...(db.meals||{})},wellnessIntake:{...(db.wellnessIntake||{})},wellnessHistory:Array.isArray(db.wellnessHistory)?db.wellnessHistory:[],purchases:Array.isArray(db.purchases)?db.purchases:[]};
 const save=()=>localStorage.setItem('jest-db',JSON.stringify(db));
 
 const moodList=[
@@ -39,7 +39,7 @@ function setRoute(route){
 
 function card(title,value,sub='',cls=''){return `<div class="card stat-card ${cls}"><h3>${title}</h3><div class="stat-main">${value}</div>${sub?`<div class="subtle">${sub}</div>`:''}</div>`}
 function homeCard(title,value,sub,onclick){return `<div class="card stat-card home-stat-action" role="button" tabindex="0" onclick="${onclick}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${onclick}}"><h3>${title}</h3><div class="stat-main">${value}</div>${sub?`<div class="subtle">${sub}</div>`:''}</div>`}
-function navMonth(delta){state.month+=delta;if(state.month<0){state.month=11;state.year--}if(state.month>11){state.month=0;state.year++}if(state.route==='meals')return renderMeals();if(state.route==='home'&&state.track==='sleep'&&document.querySelector('.page-title')?.textContent==='Sleep + Mood')return renderSleepMood();if(state.route==='home'&&state.track==='period'&&document.querySelector('.page-title')?.textContent==='Period + Symptoms')return renderPeriod();if(state.route==='home'&&state.track==='water'&&document.querySelector('.page-title')?.textContent==='Water + Sugar')return renderWaterSugar();render();}
+function navMonth(delta){state.month+=delta;if(state.month<0){state.month=11;state.year--}if(state.month>11){state.month=0;state.year++}if(state.route==='meals')return renderMeals();if(state.route==='wellness')return renderWellness();if(state.route==='home'&&state.track==='sleep'&&document.querySelector('.page-title')?.textContent==='Sleep + Mood')return renderSleepMood();if(state.route==='home'&&state.track==='period'&&document.querySelector('.page-title')?.textContent==='Period + Symptoms')return renderPeriod();if(state.route==='home'&&state.track==='water'&&document.querySelector('.page-title')?.textContent==='Water + Sugar')return renderWaterSugar();render();}
 function monthNav(){return `<div class="month-nav"><button onclick="navMonth(-1)">‹</button><strong>${monthName(state.year,state.month)}</strong><button onclick="navMonth(1)">›</button></div>`}
 
 function render(){
@@ -48,6 +48,7 @@ function render(){
  if(state.route==='insights') return renderInsights();
  if(state.route==='more') return renderMore();
  if(state.route==='meals') return renderMeals();
+ if(state.route==='wellness') return renderWellness();
 }
 function purchasesForMonth(y,m){const k=`${y}-${pad(m+1)}`;return db.purchases.filter(p=>typeof p?.date==='string'&&p.date.startsWith(k));}
 function currentMonthPurchases(){return purchasesForMonth(state.year,state.month)}
@@ -65,8 +66,9 @@ function renderHome(){
   ${homeCard('Period',per.bleeding?per.bleeding:'No entry',per.bleeding?'bleeding logged':'tap to record',`openPeriod('${t}')`)}
  </section>
  <section class="section home-quote-shell"><div class="home-quote-art" aria-label="Live healthier. Feel happier. Spend smarter."></div></section>
- <section class="section home-secondary-tracker-shell" style="--secondary-tracker-count:3" aria-label="Meals, Wellness Check and Active Days trackers"><div class="home-secondary-tracker-art" aria-hidden="true"></div><div class="home-secondary-tracker-zones"><button class="home-secondary-tracker-zone" aria-label="Meals" onclick="openMeals()"></button><button class="home-secondary-tracker-zone" aria-label="Wellness Check"></button><button class="home-secondary-tracker-zone" aria-label="Active Days"></button></div></section>
+ <section class="section home-secondary-tracker-shell" style="--secondary-tracker-count:3" aria-label="Meals, Wellness Check and Active Days trackers"><div class="home-secondary-tracker-art" aria-hidden="true"></div><div class="home-secondary-tracker-zones"><button class="home-secondary-tracker-zone" aria-label="Meals" onclick="openMeals()"></button><button class="home-secondary-tracker-zone" aria-label="Wellness Check" onclick="openWellness()"></button><button class="home-secondary-tracker-zone" aria-label="Active Days"></button></div></section>
  <section class="section home-tracker-shell"><div class="home-tracker-art" aria-hidden="true"></div><div class="home-tracker-fallback"><button class="home-tracker-zone" aria-label="Sleep + Mood" onclick="openTracker('sleep')"></button><button class="home-tracker-zone" aria-label="Period" onclick="openTracker('period')"></button><button class="home-tracker-zone" aria-label="Water + Sugar" onclick="openTracker('water')"></button></div></section></div>`;
 }
 function openMeals(){state.route='meals';state.mealsView='monthly';state.year=today.getFullYear();state.month=today.getMonth();state.mealDate=iso(today);renderMeals();}
+function openWellness(){state.route='wellness';state.wellnessView='intake';state.year=today.getFullYear();state.month=today.getMonth();$$('.nav-btn[data-route]').forEach(b=>b.classList.toggle('active',b.dataset.route==='home'));renderWellness();}
 function openTracker(which){state.route='home';state.track=which;state.year=today.getFullYear();state.month=today.getMonth();if(which==='sleep'){state.smView='monthly';renderSleepMood()}if(which==='period')renderPeriod();if(which==='water')renderWaterSugar();}
