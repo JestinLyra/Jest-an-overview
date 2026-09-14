@@ -1,16 +1,16 @@
 .home-page{display:flex;flex-direction:column;min-height:calc(100vh - 300px);min-height:calc(100dvh - 300px)}
 .home-quote-shell{position:relative;margin-top:10px}
-.home-quote-art{display:block;width:100%;aspect-ratio:45/8;background:url('assets/home-quote-card.webp?v=1.9.19') center/contain no-repeat}
+.home-quote-art{display:block;width:100%;aspect-ratio:45/8;background:url('assets/home-quote-card.webp?v=1.9.20') center/contain no-repeat}
 
-/* Second Home tracker switcher: Meals + Wellness Checks + Active Days in one three-part bar. */
+/* Second Home tracker switcher: Meals + Wellness Check + Active Days in one three-part bar. */
 .home-secondary-tracker-shell{--secondary-tracker-count:3;position:relative;margin-top:8px;isolation:isolate;overflow:hidden}
-.home-secondary-tracker-art{display:block;width:100%;aspect-ratio:3/1;background:url('assets/home-secondary-tracker-switcher.svg?v=1.9.19') center/100% 100% no-repeat}
+.home-secondary-tracker-art{display:block;width:100%;aspect-ratio:3/1;background:url('assets/home-secondary-tracker-switcher.svg?v=1.9.20') center/100% 100% no-repeat}
 .home-secondary-tracker-zones{position:absolute;inset:0;display:grid;grid-template-columns:repeat(var(--secondary-tracker-count),minmax(0,1fr));gap:0}
 .home-secondary-tracker-zone{min-height:44px;border:0;border-radius:0;background:transparent!important;box-shadow:none!important;color:transparent!important;padding:0;font-size:0;line-height:0;overflow:hidden;text-shadow:none!important}
 
 /* Approved primary tracker strip. Artwork labels are canonical; buttons are tap zones only. */
 .home-tracker-shell{position:relative;margin-top:8px;margin-bottom:0;padding-top:0;overflow:hidden}
-.home-tracker-art{display:block;width:100%;aspect-ratio:3/1;background:url('assets/home-tracker-switcher.webp?v=1.9.19') center/contain no-repeat}
+.home-tracker-art{display:block;width:100%;aspect-ratio:3/1;background:url('assets/home-tracker-switcher.webp?v=1.9.20') center/contain no-repeat}
 .home-tracker-fallback{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);background:transparent!important;border:0;padding:0;gap:0;margin:0}
 .home-tracker-zone{position:relative;z-index:2;color:transparent!important;background:transparent!important;border:0;border-radius:0;padding:0;min-height:44px;font-size:0;line-height:0;overflow:hidden;text-shadow:none!important;box-shadow:none!important}
 @media(max-width:390px){.home-page{min-height:calc(100vh - 280px);min-height:calc(100dvh - 280px)}}
