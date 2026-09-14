@@ -1,49 +1,62 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 360" role="img" aria-labelledby="title desc">
-  <title id="title">Meals</title>
-  <desc id="desc">Glossy pale blue Meals switcher with mint fork and knife icon.</desc>
+  <title id="title">Meals, Wellness Checks and Active Days</title>
+  <desc id="desc">Three-part glossy tracker switcher matching the primary Home switcher layout.</desc>
   <defs>
     <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#fbfdff"/>
-      <stop offset="0.55" stop-color="#f3f8fd"/>
+      <stop offset="0.55" stop-color="#f4f8fd"/>
       <stop offset="1" stop-color="#eaf2fa"/>
     </linearGradient>
-    <linearGradient id="mint" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="meal" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#83ebd0"/>
-      <stop offset="0.55" stop-color="#58d1b6"/>
       <stop offset="1" stop-color="#36ae94"/>
     </linearGradient>
-    <linearGradient id="whiteGloss" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="1" stop-color="#eaf1f7"/>
+    <linearGradient id="wellness" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9c9ff"/>
+      <stop offset="1" stop-color="#9f84e8"/>
     </linearGradient>
-    <filter id="softShadow" x="-20%" y="-30%" width="140%" height="170%">
-      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#7f95ab" flood-opacity="0.22"/>
-    </filter>
-    <filter id="iconShadow" x="-35%" y="-35%" width="170%" height="180%">
-      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#2a876f" flood-opacity="0.28"/>
+    <linearGradient id="active" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8cebd3"/>
+      <stop offset="1" stop-color="#45bfa3"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-30%" width="140%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#7f95ab" flood-opacity="0.20"/>
     </filter>
   </defs>
-  <g filter="url(#softShadow)">
+  <g filter="url(#shadow)">
     <rect x="24" y="34" width="1552" height="292" rx="72" fill="url(#bar)" stroke="#dce7f3" stroke-width="5"/>
     <rect x="38" y="47" width="1524" height="264" rx="61" fill="none" stroke="#ffffff" stroke-opacity="0.78" stroke-width="4"/>
-    <path d="M82 70H1518" stroke="#ffffff" stroke-opacity="0.68" stroke-width="8" stroke-linecap="round"/>
+    <path d="M533 68V292M1067 68V292" stroke="#dce7f3" stroke-width="4"/>
   </g>
-  <g filter="url(#iconShadow)">
-    <circle cx="166" cy="180" r="88" fill="url(#mint)"/>
-    <ellipse cx="142" cy="133" rx="39" ry="15" fill="#ffffff" opacity="0.34" transform="rotate(-28 142 133)"/>
-    <g fill="url(#whiteGloss)">
-      <rect x="128" y="141" width="15" height="103" rx="8"/>
-      <rect x="108" y="112" width="13" height="54" rx="7"/>
-      <rect x="128" y="112" width="13" height="54" rx="7"/>
-      <rect x="148" y="112" width="13" height="54" rx="7"/>
-      <path d="M114 151c0 22 13 34 21 34s21-12 21-34h-12c0 12-4 19-9 19s-9-7-9-19z"/>
-      <path d="M189 111c20 0 30 15 30 42v91c0 8-6 14-14 14s-14-6-14-14v-62c-11-3-18-13-18-26 0-20 6-45 16-45z"/>
+
+  <g>
+    <circle cx="135" cy="180" r="68" fill="url(#meal)"/>
+    <g fill="#fff">
+      <rect x="105" y="145" width="12" height="78" rx="6"/>
+      <rect x="90" y="122" width="10" height="42" rx="5"/>
+      <rect x="106" y="122" width="10" height="42" rx="5"/>
+      <rect x="122" y="122" width="10" height="42" rx="5"/>
+      <path d="M95 154c0 17 10 27 17 27s17-10 17-27h-10c0 9-3 14-7 14s-7-5-7-14z"/>
+      <path d="M153 121c16 0 24 12 24 33v69c0 6-5 11-11 11s-11-5-11-11v-48c-9-3-14-10-14-20 0-16 5-34 12-34z"/>
     </g>
-    <g fill="#64d5ba">
-      <rect x="232" y="92" width="14" height="37" rx="7" transform="rotate(8 239 111)"/>
-      <rect x="253" y="105" width="14" height="37" rx="7" transform="rotate(43 260 124)"/>
-      <rect x="266" y="127" width="14" height="37" rx="7" transform="rotate(77 273 146)"/>
-    </g>
+    <text x="230" y="202" fill="#173c70" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="62" font-weight="700">Meals</text>
   </g>
-  <text x="304" y="205" fill="#173c70" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="76" font-weight="700" letter-spacing="-1.5">Meals</text>
+
+  <g>
+    <circle cx="665" cy="180" r="68" fill="url(#wellness)"/>
+    <path d="M665 137v86M622 180h86" stroke="#fff" stroke-width="20" stroke-linecap="round"/>
+    <text x="755" y="171" fill="#173c70" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="46" font-weight="700">Wellness</text>
+    <text x="755" y="220" fill="#173c70" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="46" font-weight="700">Checks</text>
+  </g>
+
+  <g>
+    <circle cx="1195" cy="180" r="68" fill="url(#active)"/>
+    <path d="M1164 211l28-42 23 18 37-52" fill="none" stroke="#fff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="1164" cy="211" r="8" fill="#fff"/>
+    <circle cx="1192" cy="169" r="8" fill="#fff"/>
+    <circle cx="1215" cy="187" r="8" fill="#fff"/>
+    <circle cx="1252" cy="135" r="8" fill="#fff"/>
+    <text x="1290" y="171" fill="#173c70" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="46" font-weight="700">Active</text>
+    <text x="1290" y="220" fill="#173c70" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="46" font-weight="700">Days</text>
+  </g>
 </svg>
