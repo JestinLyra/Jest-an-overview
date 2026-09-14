@@ -1,5 +1,5 @@
 const wellnessIronLegend=[['No','no','#ffffff'],['Yes','yes','#cdb9f3'],['2 tabs','two','#8c6fd1']];
-const wellnessFoodLegend=[['None','none','#ffffff'],['Fish','fish','#ead8c2'],['Beef','beef','#b98b62'],['Chicken','chicken','#f0dfca'],['Pork','pork','#d7b994'],['Spinach','spinach','#b9dfba']];
+const wellnessFoodLegend=[['No tracked iron-rich food','none','#ffffff'],['Fish','fish','#ead8c2'],['Beef','beef','#b98b62'],['Chicken','chicken','#f0dfca'],['Pork','pork','#d7b994'],['Spinach','spinach','#b9dfba']];
 
 function wellnessEnsureData(){
  db.wellnessIntake=db.wellnessIntake&&typeof db.wellnessIntake==='object'&&!Array.isArray(db.wellnessIntake)?db.wellnessIntake:{};
