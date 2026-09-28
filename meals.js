@@ -18,7 +18,7 @@ function drawMealRadial(){
  const n=daysIn(state.year,state.month),step=360/n;
  const colours={dinner:{prep:'#C5E1A5',leftover:'#E5F1D5'},lunch:{prep:'#B3E5FC',leftover:'#DDF3FD'},breakfast:{prep:'#F9E7A3',leftover:'#FFF4CB'}};
  const rings={breakfast:[78,104],lunch:[108,134],dinner:[138,164]};
- const sourceFill=(meal,key)=>!meal||meal.source==='takeaway'?'#ffffff':(colours[key][meal.source]||'#ffffff');
+ const sourceFill=(meal,key)=>!meal?'#ffffff':meal.source==='takeaway'?'#EEF1F4':(colours[key][meal.source]||'#ffffff');
  let svg=`<svg viewBox="0 0 400 400" aria-label="Monthly meals radial calendar"><circle cx="200" cy="200" r="68" fill="#f8fbfc"/>`;
  for(let d=1;d<=n;d++){
   const date=`${mk()}-${pad(d)}`,day=db.meals[date]||{},a0=(d-1)*step+.7,a1=d*step-.7,mid=(a0+a1)/2;
