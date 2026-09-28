@@ -37,7 +37,7 @@ function drawWellnessWheel(){
   const date=`${mk()}-${pad(d)}`,v=db.wellnessIntake[date]||{},iron=ironColours[v.iron]||'#ffffff',food=foodColours[v.food]||'#ffffff',a0=(d-1)*step+.8,a1=d*step-.8;
   svg+=`<path d="${wedge(180,180,128,166,a0,a1)}" fill="${food}" stroke="#fff" stroke-width="1.4" onclick="openWellnessIntake('${date}')"/>`;
   svg+=`<path d="${wedge(180,180,78,114,a0,a1)}" fill="${iron}" stroke="#fff" stroke-width="1.4" onclick="openWellnessIntake('${date}')"/>`;
-  const p=polar(180,180,121,(a0+a1)/2);svg+=`<text x="${p.x}" y="${p.y+3}" text-anchor="middle" class="wellness-wheel-day">${d}</text>`;
+  const p=polar(180,180,121,(a0+a1)/2),weekday=['Su','Mo','Tu','We','Th','Fr','Sa'][new Date(state.year,state.month,d,12).getDay()];svg+=`<text x="${p.x}" y="${p.y-1.5}" text-anchor="middle" class="wellness-wheel-day"><tspan x="${p.x}" class="wellness-wheel-date">${d}</tspan><tspan x="${p.x}" dy="7.5" class="wellness-wheel-weekday">${weekday}</tspan></text>`;
  }
  svg+=`<text x="180" y="176" text-anchor="middle" class="wellness-wheel-center">${monthName(state.year,state.month)}</text><text x="180" y="195" text-anchor="middle" class="wellness-wheel-sub">tablet + food</text></svg>`;
  el.innerHTML=svg;
